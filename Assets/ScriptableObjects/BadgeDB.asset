@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29c9bc8334022a74fa879575a025b44e, type: 3}
+  m_Name: BadgeDB
+  m_EditorClassIdentifier: 
+  badges:
+  - teamName: Arsenal FC
+    badgeSprite: {fileID: -5043818755587806566, guid: 55dcbbcf403a6d2449410b0181d923f6, type: 3}
+  - teamName: Aston Villa FC
+    badgeSprite: {fileID: -5740058271436942415, guid: 4d45180adda3ee14a8da9ec27f5edf49, type: 3}
+  - teamName: Brighton & Hove Albion FC
+    badgeSprite: {fileID: -1964793421344485194, guid: baf707f5b7018df4591b9c0fa84ff775, type: 3}
+  - teamName: Burnley FC
+    badgeSprite: {fileID: -540806435191452611, guid: 7f60d31de2feeb64295c46a0c7f83b2e, type: 3}
+  - teamName: Chelsea FC
+    badgeSprite: {fileID: 9182350902601771614, guid: 97ef4fa406a576a42a80f5f9303b21c0, type: 3}
+  - teamName: Crystal Palace FC
+    badgeSprite: {fileID: -4781241900423601101, guid: 1114627a25eab0e4c9639fdd4a1db483, type: 3}
+  - teamName: Everton FC
+    badgeSprite: {fileID: -1879843529032013308, guid: eff77a6263c57854ca3e75a87f658bed, type: 3}
+  - teamName: Fulham FC
+    badgeSprite: {fileID: -1865725959710228357, guid: 1e3d650be60e7574c89a19b507039444, type: 3}
+  - teamName: Leeds United FC
+    badgeSprite: {fileID: 3394337348091332101, guid: 4efbe4c7801bd6140a6e1c10bb838dbb, type: 3}
+  - teamName: Leicester City FC
+    badgeSprite: {fileID: -8899206119503436600, guid: 9013525e9da62ba45aadc79926a0fc81, type: 3}
+  - teamName: Liverpool FC
+    badgeSprite: {fileID: -8998117299143693375, guid: 620e0ad4ef8b5734d80d4fa1c1a50a9c, type: 3}
+  - teamName: Manchester City FC
+    badgeSprite: {fileID: -3039907019341381438, guid: 4f7cd32386d68934b9bc97b733cd1118, type: 3}
+  - teamName: Manchester United FC
+    badgeSprite: {fileID: 8701032601986742098, guid: e3cde57c578a8984c9487bcf74f1daf1, type: 3}
+  - teamName: Newcastle United FC
+    badgeSprite: {fileID: 7752678843265076435, guid: 0296b3c50aa69b94ab9c7c5af421984c, type: 3}
+  - teamName: Sheffield United FC
+    badgeSprite: {fileID: 8344100731244421120, guid: 7e7ecc5220e6bd344a1638f8e486f34e, type: 3}
+  - teamName: Southampton FC
+    badgeSprite: {fileID: 8937030175920483421, guid: 1a18c33843fb1d94d97dd8a8b446beb2, type: 3}
+  - teamName: Tottenham Hotspur FC
+    badgeSprite: {fileID: -332552057, guid: cf294eff1e444b548802505ae9655f6b, type: 3}
+  - teamName: West Bromwich Albion FC
+    badgeSprite: {fileID: -5702886011658110237, guid: 5dc5cc0fffa4ffc469df1491e4ebcce2, type: 3}
+  - teamName: West Ham United FC
+    badgeSprite: {fileID: 3014656606085492696, guid: 3ee158f4d5b6a824fa76e78e6f4449a0, type: 3}
+  - teamName: Wolverhampton Wanderers FC
+    badgeSprite: {fileID: -344250133113995899, guid: 6860a8f0251623d438d83170a792b615, type: 3}
