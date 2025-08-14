@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,6 +9,10 @@ using Random = UnityEngine.Random;
 
 public class MatchManager : MonoBehaviour
 {
+    [SerializeField] private AnimationScript _animationScript;
+    [SerializeField] private Animator matchAnimator;
+    [SerializeField] private float updateDelay = 0.3f;
+    
     private List<Match> allMatches;
     [SerializeField] private BadgeDb database;
     [SerializeField] private Image homeTeam;
@@ -17,10 +22,12 @@ public class MatchManager : MonoBehaviour
     [SerializeField] private TMP_Text homeScoreTXT;
     [SerializeField] private TMP_Text awayScoreTXT;
     [SerializeField] private TMP_Text roundTXT;
+    [SerializeField] private LastMatches lastMatches;
 
     public void SetMatches(List<Match> matches)
     {
         allMatches = matches;
+        lastMatches.Initialize(matches);
     }
 
     public void Update()
@@ -39,13 +46,23 @@ public class MatchManager : MonoBehaviour
             Debug.LogWarning("No matches available in MatchManager.");
             return;
         }
-
-        int index = Random.Range(0, allMatches.Count);
-        Match match = allMatches[index];
-
-        UpdateMatch(match);
+        
+        StartCoroutine(ShowMatchWithDelay());
     }
 
+    private IEnumerator ShowMatchWithDelay()
+    {
+        if (matchAnimator != null)
+        {
+            matchAnimator.SetTrigger("Exit"); 
+        }
+        yield return new WaitForSeconds(updateDelay);
+        
+        int index = Random.Range(0, allMatches.Count);
+        Match match = allMatches[index];
+        UpdateMatch(match);
+        
+    }
     
     public void UpdateMatch(Match match)
     {
