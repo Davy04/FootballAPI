@@ -9,10 +9,11 @@ public class LastMatches : MonoBehaviour
 {
     [Header("Referências de UI")]
     [SerializeField] private GameObject popupBase;
-    [SerializeField] private TextMeshProUGUI HomeTeamName;
-    [SerializeField] private TextMeshProUGUI AwayTeamName;
+    [SerializeField] private TextMeshProUGUI homeTeamName;
+    [SerializeField] private TextMeshProUGUI awayTeamName;
     [SerializeField] private Transform groupResults; 
     [SerializeField] private ResultGroupItem resultPrefab;
+    [SerializeField] private TextMeshProUGUI roundText;
 
     [Header("Banco de Escudos")]
     [SerializeField] private BadgeDb badgeDatabase;
@@ -41,7 +42,7 @@ public class LastMatches : MonoBehaviour
     
     public void OnTeamClicked(string teamType)
     {
-        string teamName = teamType == "home" ? HomeTeamName.text.Trim() : AwayTeamName.text.Trim();
+        string teamName = teamType == "home" ? homeTeamName.text.Trim() : awayTeamName.text.Trim();
         ShowTeamHistory(teamName);
     }
 
