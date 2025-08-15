@@ -8,7 +8,8 @@ public class LastMatches : MonoBehaviour
 {
     [Header("Referências")]
     [SerializeField] private GameObject popupBase;
-    [SerializeField] private TextMeshProUGUI teamNameText;
+    [SerializeField] private TextMeshProUGUI homeTeamName;
+    [SerializeField] private TextMeshProUGUI awayTeamName;
     [Header("Campos de Resultado")]
     [SerializeField] private TextMeshProUGUI[] homeTeamTexts;  
     [SerializeField] private TextMeshProUGUI[] homeScoreTexts;   
@@ -26,7 +27,13 @@ public class LastMatches : MonoBehaviour
         allMatches = matches;
     }
     
-    public void OnTeamClicked()
+    public void OnTeamClicked(string teamType)
+    {
+        string teamName = teamType == "home" ? homeTeamName.text.Trim() : awayTeamName.text.Trim();
+        ShowTeamHistory(teamName);
+    }
+
+    private void ShowTeamHistory(string teamName)
     {
         if (allMatches == null || allMatches.Count == 0)
         {
@@ -34,24 +41,17 @@ public class LastMatches : MonoBehaviour
             return;
         }
 
-        if (teamNameText == null)
-        {
-            Debug.LogError("Texto do nome do time não foi atribuído no Inspector.");
-            return;
-        }
-
-        string teamName = teamNameText.text.Trim();
-
         if (string.IsNullOrEmpty(teamName))
         {
             Debug.LogError("Nome do time está vazio.");
             return;
         }
 
-        var last5Matches = LinqFilter.GetLastMatches(allMatches, teamName, 5);
+        var last5Matches = LinqFilter.GetLastMatches(allMatches, teamName, maxMatchesToShow);
         DisplayMatchResults(last5Matches, teamName);
         popupBase.SetActive(true);
     }
+
     
     private void DisplayMatchResults(List<Match> matches, string currentTeam)
     {
