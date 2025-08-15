@@ -3,24 +3,36 @@ using TMPro;
 using System.Collections.Generic;
 using CSharpAPI.Filters;
 using CSharpAPI.Models;
+using Models; // assumindo que seu tipo Match está aqui
 
 public class LastMatches : MonoBehaviour
 {
-    [Header("Referências")]
+    [Header("Referências de UI")]
     [SerializeField] private GameObject popupBase;
-    [SerializeField] private TextMeshProUGUI homeTeamName;
-    [SerializeField] private TextMeshProUGUI awayTeamName;
-    [Header("Campos de Resultado")]
-    [SerializeField] private TextMeshProUGUI[] homeTeamTexts;  
-    [SerializeField] private TextMeshProUGUI[] homeScoreTexts;   
-    [SerializeField] private TextMeshProUGUI[] awayTeamTexts;
-    [SerializeField] private TextMeshProUGUI[] awayScoreTexts; 
-    [SerializeField] private TextMeshProUGUI[] resultStatusTexts; 
+    [SerializeField] private TextMeshProUGUI HomeTeamName;
+    [SerializeField] private TextMeshProUGUI AwayTeamName;
+    [SerializeField] private Transform groupResults; 
+    [SerializeField] private ResultGroupItem resultPrefab;
+
+    [Header("Banco de Escudos")]
+    [SerializeField] private BadgeDb badgeDatabase;
 
     [Header("Configuração")]
     [SerializeField] private int maxMatchesToShow = 5;
 
+    private Dictionary<string, Sprite> badgeDictionary;
     private List<Match> allMatches;
+
+    void Awake()
+    {
+        // Monta dicionário para buscar escudo pelo nome
+        badgeDictionary = new Dictionary<string, Sprite>();
+        foreach (var badge in badgeDatabase.badges)
+        {
+            if (!badgeDictionary.ContainsKey(badge.teamName))
+                badgeDictionary.Add(badge.teamName, badge.badgeSprite);
+        }
+    }
 
     public void Initialize(List<Match> matches)
     {
@@ -29,7 +41,7 @@ public class LastMatches : MonoBehaviour
     
     public void OnTeamClicked(string teamType)
     {
-        string teamName = teamType == "home" ? homeTeamName.text.Trim() : awayTeamName.text.Trim();
+        string teamName = teamType == "home" ? HomeTeamName.text.Trim() : AwayTeamName.text.Trim();
         ShowTeamHistory(teamName);
     }
 
@@ -47,40 +59,54 @@ public class LastMatches : MonoBehaviour
             return;
         }
 
-        var last5Matches = LinqFilter.GetLastMatches(allMatches, teamName, maxMatchesToShow);
-        DisplayMatchResults(last5Matches, teamName);
+        // Limpa histórico anterior
+        foreach (Transform child in groupResults)
+            Destroy(child.gameObject);
+
+        // Pega últimos X jogos do time
+        var lastMatches = LinqFilter.GetLastMatches(allMatches, teamName, maxMatchesToShow);
+
+        foreach (var match in lastMatches)
+        {
+            var item = Instantiate(resultPrefab, groupResults);
+
+            // Busca sprite de cada time
+            Sprite homeBadge = GetBadge(match.HomeTeam);
+            Sprite awayBadge = GetBadge(match.AwayTeam);
+
+            int homeScore = match.Score?.Ft?[0] ?? 0;
+            int awayScore = match.Score?.Ft?[1] ?? 0;
+
+            item.SetData(
+                match.HomeTeam,
+                homeBadge,
+                homeScore,
+                match.AwayTeam,
+                awayBadge,
+                awayScore,
+                GetResultStatus(match, teamName)
+            );
+        }
+
         popupBase.SetActive(true);
     }
 
-    
-    private void DisplayMatchResults(List<Match> matches, string currentTeam)
+    private Sprite GetBadge(string teamName)
     {
-        int matchesToShow = Mathf.Min(matches.Count, maxMatchesToShow);
-    
-        for (int i = 0; i < maxMatchesToShow; i++)
+        if (badgeDictionary == null || badgeDictionary.Count == 0)
         {
-            bool hasMatch = i < matchesToShow;
-            
-            homeTeamTexts[i].gameObject.SetActive(hasMatch);
-            homeScoreTexts[i].gameObject.SetActive(hasMatch);
-            awayTeamTexts[i].gameObject.SetActive(hasMatch);
-            awayScoreTexts[i].gameObject.SetActive(hasMatch);
-            resultStatusTexts[i].gameObject.SetActive(hasMatch);
-
-            if (!hasMatch) continue;
-
-            Match match = matches[i];
-            int homeScore = match.Score?.Ft?[0] ?? 0;
-            int awayScore = match.Score?.Ft?[1] ?? 0;
-            
-            homeTeamTexts[i].text = match.HomeTeam;
-            homeScoreTexts[i].text = homeScore.ToString();
-            awayTeamTexts[i].text = match.AwayTeam;
-            awayScoreTexts[i].text = awayScore.ToString();
-            
-            resultStatusTexts[i].text = GetResultStatus(match, currentTeam);
+            badgeDictionary = new Dictionary<string, Sprite>();
+            foreach (var badge in badgeDatabase.badges)
+            {
+                if (!badgeDictionary.ContainsKey(badge.teamName))
+                    badgeDictionary.Add(badge.teamName, badge.badgeSprite);
+            }
         }
+
+        badgeDictionary.TryGetValue(teamName, out var sprite);
+        return sprite;
     }
+
 
     private string GetResultStatus(Match match, string currentTeam)
     {
@@ -88,15 +114,9 @@ public class LastMatches : MonoBehaviour
         int awayScore = match.Score?.Ft?[1] ?? 0;
     
         if (match.HomeTeam == currentTeam)
-        {
-            return homeScore > awayScore ? "V" : 
-                homeScore < awayScore ? "D" : "E";
-        }
+            return homeScore > awayScore ? "V" : homeScore < awayScore ? "D" : "E";
         else
-        {
-            return awayScore > homeScore ? "V" : 
-                awayScore < homeScore ? "D" : "E";
-        }
+            return awayScore > homeScore ? "V" : awayScore < homeScore ? "D" : "E";
     }
     
     public void ClosePopup()
