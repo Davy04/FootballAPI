@@ -23,10 +23,10 @@ public class LastMatches : MonoBehaviour
 
     private Dictionary<string, Sprite> badgeDictionary;
     private List<Match> allMatches;
-
+    
+    
     void Awake()
     {
-        // Monta dicionário para buscar escudo pelo nome
         badgeDictionary = new Dictionary<string, Sprite>();
         foreach (var badge in badgeDatabase.badges)
         {
@@ -38,6 +38,7 @@ public class LastMatches : MonoBehaviour
     public void Initialize(List<Match> matches)
     {
         allMatches = matches;
+        
     }
     
     public void OnTeamClicked(string teamType)
@@ -59,19 +60,16 @@ public class LastMatches : MonoBehaviour
             Debug.LogError("Nome do time está vazio.");
             return;
         }
-
-        // Limpa histórico anterior
+        
         foreach (Transform child in groupResults)
             Destroy(child.gameObject);
-
-        // Pega últimos X jogos do time
-        var lastMatches = LinqFilter.GetLastMatches(allMatches, teamName, maxMatchesToShow);
+        int currentRound = LinqFilter.ExtractRoundNumber(roundText.text);
+        var lastMatches = LinqFilter.GetLastMatches(allMatches, teamName, currentRound, maxMatchesToShow);
 
         foreach (var match in lastMatches)
         {
             var item = Instantiate(resultPrefab, groupResults);
-
-            // Busca sprite de cada time
+            
             Sprite homeBadge = GetBadge(match.HomeTeam);
             Sprite awayBadge = GetBadge(match.AwayTeam);
 
