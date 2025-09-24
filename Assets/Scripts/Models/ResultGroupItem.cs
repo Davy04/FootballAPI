@@ -1,8 +1,9 @@
+
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Models
+namespace CSharpAPI.Models
 {
     public class ResultGroupItem : MonoBehaviour
     {

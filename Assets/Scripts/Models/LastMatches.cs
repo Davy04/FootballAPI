@@ -3,8 +3,6 @@ using TMPro;
 using System.Collections.Generic;
 using CSharpAPI.Filters;
 using CSharpAPI.Models;
-using Models; // assumindo que seu tipo Match está aqui
-
 public class LastMatches : MonoBehaviour
 {
     [Header("Referências de UI")]

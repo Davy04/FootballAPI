@@ -380,6 +380,7 @@ GameObject:
   - component: {fileID: 6551006801288772341}
   - component: {fileID: 2049102872913685698}
   - component: {fileID: 347568793305560838}
+  - component: {fileID: 3545218423289619036}
   m_Layer: 5
   m_Name: StaticsGrid_Popup
   m_TagString: Untagged
@@ -430,15 +431,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.18184525, g: 0, b: 0.3207547, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 88dbead770e7b48f4ab3cb6b27ea7ac8, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -463,3 +464,18 @@ MonoBehaviour:
   gridContainer: {fileID: 456030402925570391}
   teamPrefab: {fileID: 2796562541417671550, guid: 708cf5ce0fe7abd4aab7cc42620f8921, type: 3}
   badgeDatabase: {fileID: 11400000, guid: cfe2cebca63dfe744af1a5f1211ae8d7, type: 2}
+--- !u!114 &3545218423289619036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8659528554043140330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 675024213d3ca44038e1471b22348c0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color1: {r: 0.5806226, g: 0, b: 0.6226415, a: 1}
+  Color2: {r: 0.100143924, g: 0, b: 0.1981132, a: 1}
+  Angle: 45

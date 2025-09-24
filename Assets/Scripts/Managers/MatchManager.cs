@@ -23,6 +23,8 @@ public class MatchManager : MonoBehaviour
     [SerializeField] private TMP_Text awayScoreTXT;
     [SerializeField] private TMP_Text roundTXT;
     [SerializeField] private LastMatches lastMatches;
+    private bool isShowingMatch = false;
+
 
     public void SetMatches(List<Match> matches)
     {
@@ -52,17 +54,23 @@ public class MatchManager : MonoBehaviour
 
     private IEnumerator ShowMatchWithDelay()
     {
+        if (isShowingMatch) yield break;
+        isShowingMatch = true;
+
         if (matchAnimator != null)
         {
             matchAnimator.SetTrigger("Exit"); 
         }
+
         yield return new WaitForSeconds(updateDelay);
-        
+
         int index = Random.Range(0, allMatches.Count);
         Match match = allMatches[index];
         UpdateMatch(match);
-        
+
+        isShowingMatch = false;
     }
+
     
     public void UpdateMatch(Match match)
     {
