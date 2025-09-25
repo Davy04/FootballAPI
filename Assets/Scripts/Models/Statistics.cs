@@ -13,7 +13,10 @@ public class Statistics : MonoBehaviour
 
     [Header("Popup de Detalhes")]
     [SerializeField] private GameObject teamDetailPopup;
+    [SerializeField] private TeamStatsPopup teamStatsPopup;
 
+    [SerializeField] private MatchManager matchManager;
+    
     private Dictionary<string, Sprite> badgeDictionary;
 
     void Awake()
@@ -55,18 +58,22 @@ public class Statistics : MonoBehaviour
 
     private void OnTeamClicked(string teamName)
     {
-        Debug.Log($"Time clicado: {teamName}");
-
-        if (!badgeDictionary.ContainsKey(teamName))
+        if (!badgeDictionary.TryGetValue(teamName, out Sprite badge))
         {
             Debug.LogError("Escudo não encontrado!");
             return;
         }
 
-        // Aqui você pode popular os dados do popup de detalhes
+        List<Match> allMatches = matchManager.GetAllMatches();
+
         popupBase.SetActive(false);
         teamDetailPopup.SetActive(true);
+
+        teamStatsPopup.SetTeamInfo(teamName, badge, allMatches);
     }
+
+
+
 
     public void ClosePopup()
     {

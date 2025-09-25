@@ -52,6 +52,11 @@ public class MatchManager : MonoBehaviour
         StartCoroutine(ShowMatchWithDelay());
     }
 
+    public List<Match> GetAllMatches()
+    {
+        return allMatches;
+    }
+    
     private IEnumerator ShowMatchWithDelay()
     {
         if (isShowingMatch) yield break;
