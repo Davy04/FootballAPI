@@ -1,21 +1,23 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class Statistics : MonoBehaviour
 {
     [Header("Referências de UI")]
-    [SerializeField] private GameObject popupBase;       // painel único
-    [SerializeField] private Transform gridContainer;    // onde os escudos serão instanciados
-    [SerializeField] private GameObject teamPrefab;      // prefab de 1 item (tem TeamGridItem)
+    [SerializeField] private GameObject popupBase;
+    [SerializeField] private Transform gridContainer;
+    [SerializeField] private GameObject teamPrefab;
 
     [Header("Banco de Escudos")]
     [SerializeField] private BadgeDb badgeDatabase;
+
+    [Header("Popup de Detalhes")]
+    [SerializeField] private GameObject teamDetailPopup;
 
     private Dictionary<string, Sprite> badgeDictionary;
 
     void Awake()
     {
-        // monta o dicionário de escudos
         badgeDictionary = new Dictionary<string, Sprite>();
         foreach (var badge in badgeDatabase.badges)
         {
@@ -32,18 +34,12 @@ public class Statistics : MonoBehaviour
             return;
         }
 
-        Debug.Log($"Total de escudos encontrados: {badgeDictionary.Count}");
-
-        // limpa grid
         foreach (Transform child in gridContainer)
             Destroy(child.gameObject);
 
-        // popula com escudos
         foreach (var kvp in badgeDictionary)
         {
             var item = Instantiate(teamPrefab, gridContainer);
-
-            // usa o script TeamGridItem
             var teamItem = item.GetComponent<TeamGridItem>();
             if (teamItem == null)
             {
@@ -51,16 +47,34 @@ public class Statistics : MonoBehaviour
                 continue;
             }
 
-            teamItem.SetBadge(kvp.Value); // define apenas o escudo
-            Debug.Log($"Instanciado escudo do time: {kvp.Key}");
+            teamItem.Initialize(kvp.Value, kvp.Key, OnTeamClicked);
+        }
+        
+        popupBase.SetActive(true);
+    }
+
+    private void OnTeamClicked(string teamName)
+    {
+        Debug.Log($"Time clicado: {teamName}");
+
+        if (!badgeDictionary.ContainsKey(teamName))
+        {
+            Debug.LogError("Escudo não encontrado!");
+            return;
         }
 
-        // exibe popup
-        popupBase.SetActive(true);
+        // Aqui você pode popular os dados do popup de detalhes
+        popupBase.SetActive(false);
+        teamDetailPopup.SetActive(true);
     }
 
     public void ClosePopup()
     {
         popupBase.SetActive(false);
+    }
+
+    public void CloseTeamDetailPopup()
+    {
+        teamDetailPopup.SetActive(false);
     }
 }

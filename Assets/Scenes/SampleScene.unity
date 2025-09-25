@@ -241,6 +241,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1858127809}
     m_Modifications:
+    - target: {fileID: 347568793305560838, guid: d8bbcfc14a35ba94eb0551968779d296, type: 3}
+      propertyPath: teamDetailPopup
+      value: 
+      objectReference: {fileID: 727755293}
     - target: {fileID: 1384424609731228723, guid: d8bbcfc14a35ba94eb0551968779d296, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 2
@@ -1111,6 +1115,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &727755293 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6563722456741457506, guid: 683dd262f9852e84baf0d086a4f10752, type: 3}
+  m_PrefabInstance: {fileID: 1020456069}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &745377516
 GameObject:
   m_ObjectHideFlags: 0
@@ -1456,6 +1465,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1858127809}
     m_Modifications:
+    - target: {fileID: 3462603193942635195, guid: 683dd262f9852e84baf0d086a4f10752, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3462603193942635195, guid: 683dd262f9852e84baf0d086a4f10752, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3462603193942635195, guid: 683dd262f9852e84baf0d086a4f10752, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1294820496}
+    - target: {fileID: 3462603193942635195, guid: 683dd262f9852e84baf0d086a4f10752, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3462603193942635195, guid: 683dd262f9852e84baf0d086a4f10752, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: SetActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 3462603193942635195, guid: 683dd262f9852e84baf0d086a4f10752, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3462603193942635195, guid: 683dd262f9852e84baf0d086a4f10752, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3462603193942635195, guid: 683dd262f9852e84baf0d086a4f10752, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 6563722456741457506, guid: 683dd262f9852e84baf0d086a4f10752, type: 3}
       propertyPath: m_Name
       value: TeamStats_popup Variant
