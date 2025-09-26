@@ -2,22 +2,55 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Linq;
+using CSharpAPI.Filters;
 using CSharpAPI.Models;
+using TMPro;
 
 public class LeagueTableManager : MonoBehaviour
 {
     [Header("Referências de UI")]
     [SerializeField] private GameObject leagueTablePopup;
-    [SerializeField] private Transform tableContainer; // Container da tabela
-    [SerializeField] private GameObject teamRowPrefab; // Prefab do GroupTeam
+    [SerializeField] private Transform tableContainer;
+    [SerializeField] private GameObject teamRowPrefab;
 
     [Header("Dados")]
     [SerializeField] private MatchManager matchManager;
     [SerializeField] private BadgeDb badgeDb;
+    
+    [Header("Rodadas")]
+    [SerializeField] private TMP_Dropdown roundDropdown;
+
 
     private Dictionary<string, TeamStats> teamStatsDict = new();
 
-    public void ShowLeagueTable()
+    private void Start()
+    {
+        if (roundDropdown != null)
+        {
+            roundDropdown.ClearOptions();
+            List<string> options = new List<string>();
+            for (int i = 1; i <= 38; i++)
+                options.Add($"Rodada {i}");
+
+            roundDropdown.AddOptions(options);
+            roundDropdown.onValueChanged.AddListener(OnRoundChanged);
+
+            roundDropdown.value = 37;
+            roundDropdown.RefreshShownValue();
+
+            ShowLeagueTable(round: 38);
+        }
+    }
+
+
+    private void OnRoundChanged(int dropdownIndex)
+    {
+        int round = dropdownIndex + 1;
+        ShowLeagueTable(round);
+    }
+
+    
+    public void ShowLeagueTable(int round)
     {
         if (matchManager == null)
         {
@@ -28,16 +61,19 @@ public class LeagueTableManager : MonoBehaviour
         ClearTable();
 
         List<Match> allMatches = matchManager.GetAllMatches();
-        if (allMatches == null || allMatches.Count == 0)
+        List<Match> filteredMatches = allMatches
+            .Where(m => LinqFilter.ExtractRoundNumber(m.Round) <= round)
+            .ToList();
+
+        if (filteredMatches.Count == 0)
         {
-            Debug.LogWarning("Nenhuma partida disponível para gerar tabela.");
+            Debug.LogWarning($"Nenhuma partida encontrada até a rodada {round}.");
             return;
         }
 
         teamStatsDict.Clear();
 
-        // Calcula os dados por time
-        foreach (var match in allMatches)
+        foreach (var match in filteredMatches)
         {
             if (match.Score?.Ft == null || match.Score.Ft.Count < 2)
                 continue;
@@ -49,22 +85,19 @@ public class LeagueTableManager : MonoBehaviour
             AddOrUpdateTeamStats(match.AwayTeam, awayGoals, homeGoals);
         }
 
-        // Ordena e instancia visualmente
         int position = 1;
         foreach (var kvp in teamStatsDict
-            .OrderByDescending(e => e.Value.Points)
-            .ThenByDescending(e => e.Value.GoalDifference))
+                     .OrderByDescending(e => e.Value.Points)
+                     .ThenByDescending(e => e.Value.GoalDifference))
         {
             string teamName = kvp.Key;
             TeamStats stats = kvp.Value;
 
-            // Busca escudo
             Sprite badge = null;
             var badgeEntry = badgeDb.badges.Find(b => b.teamName.ToLower() == teamName.ToLower());
             if (badgeEntry != null)
                 badge = badgeEntry.badgeSprite;
 
-            // Instancia prefab
             GameObject row = Instantiate(teamRowPrefab, tableContainer);
             GroupTeam groupTeam = row.GetComponent<GroupTeam>();
 
@@ -85,6 +118,7 @@ public class LeagueTableManager : MonoBehaviour
 
         leagueTablePopup.SetActive(true);
     }
+
 
     private void AddOrUpdateTeamStats(string teamName, int goalsFor, int goalsAgainst)
     {

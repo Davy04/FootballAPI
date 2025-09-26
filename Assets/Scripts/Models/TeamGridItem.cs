@@ -5,7 +5,7 @@ using UnityEngine.Events;
 public class TeamGridItem : MonoBehaviour
 {
     [SerializeField] private Image badgeImage;
-    [SerializeField] private Button button; // botão clicável
+    [SerializeField] private Button button;  
 
     private string teamName;
 
